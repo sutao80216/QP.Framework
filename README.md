@@ -5,10 +5,11 @@
 启动
 ---
 启动场景在Assets/Framework/AppStart中
+
 修改Assets/Defined/GameConfig.cs 的 gameModel
 
 * Editor 不更新，需要把Modules下面所有场景添加到File->Build Settings中
-* Local  更新，下载后的数据会存放到StreamingAssets目录，在打包AssetBundle的时候也是这个目录，这个时候需要把StreamingAssets下的资源放到服务器，然后删除StreamingAssets下载的资源才能看到更新效果
+* Local  更新，下载后的数据会存放到StreamingAssets目录，在打包AssetBundle的时候也是这个目录，这个时候需要把StreamingAssets下的资源放到服务器，然后删除StreamingAssets下的Modules目录才能看到更新效果
 * Remote 更新，发布版本，对应的目录自行百度
 
 *
