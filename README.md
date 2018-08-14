@@ -1,7 +1,17 @@
 # QP.Framework
 
-一个整合了XLua的Unity5 AssetBundle 轻量级的热更新框架，实现了模块化下载的一系列流程
+一个整合了XLua的Unity5 AssetBundle 轻量级的热更新框架，实现了模块化下载的一系列流程，使用简单且灵活
 
+启动
+---
+启动场景在Assets/Framework/AppStart中
+修改Assets/Defined/GameConfig.cs 的 gameModel
+
+* Editor 不更新，需要把Modules下面所有场景添加到File->Build Settings中
+* Local  更新，下载后的数据会存放到StreamingAssets目录，在打包AssetBundle的时候也是这个目录，这个时候需要把StreamingAssets下的资源放到服务器，然后删除StreamingAssets下载的资源才能看到更新效果
+* Remote 更新，发布版本，对应的目录自行百度
+
+*
 
 描述
 ---
