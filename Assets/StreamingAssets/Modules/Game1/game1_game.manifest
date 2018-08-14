@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 776316267
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fc30f8899f02db2116f4cd032efff910
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Modules/Game1/AB_Scene/Game1_Game.unity
+Dependencies:
+- C:/Users/Administrator/Desktop/QP.Framework/Assets/StreamingAssets/Modules/common/common_icon
+- C:/Users/Administrator/Desktop/QP.Framework/Assets/StreamingAssets/Modules/game1/game1_bg
+- C:/Users/Administrator/Desktop/QP.Framework/Assets/StreamingAssets/Modules/game1/_gameddz

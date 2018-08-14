@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 1292498874
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 335ef8aafd502321307d4a654f87acbc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Modules/GameBox/AB_Scene/GameBox_Main.unity
+Dependencies:
+- C:/Users/Administrator/Desktop/QP.Framework/Assets/StreamingAssets/Modules/common/uiframe

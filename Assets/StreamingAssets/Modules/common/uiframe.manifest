@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 786298152
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9657f92798742bb44788936b773d3978
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c2cf0bb052ca43def63eaf65789ae493
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Modules/Common/AB_Prefab/UIFrame.prefab
+Dependencies: []

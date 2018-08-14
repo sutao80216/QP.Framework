@@ -1,0 +1,77 @@
+ManifestFileVersion: 0
+CRC: 2185880438
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: common/common_prefab
+      Dependencies:
+        Dependency_0: common/common_icon
+        Dependency_1: common/common_icon2
+    Info_1:
+      Name: common/uiframe
+      Dependencies: {}
+    Info_2:
+      Name: common/common_icon
+      Dependencies: {}
+    Info_3:
+      Name: common/common_icon2
+      Dependencies: {}
+    Info_4:
+      Name: game1/button
+      Dependencies: {}
+    Info_5:
+      Name: game1/doudizhupanel
+      Dependencies: {}
+    Info_6:
+      Name: game1/game1_bg
+      Dependencies: {}
+    Info_7:
+      Name: game1/_gameddz
+      Dependencies: {}
+    Info_8:
+      Name: game1/game1_game
+      Dependencies:
+        Dependency_0: common/common_icon
+        Dependency_1: game1/game1_bg
+        Dependency_2: game1/_gameddz
+    Info_9:
+      Name: game1/game1_main
+      Dependencies:
+        Dependency_0: common/common_icon
+        Dependency_1: game1/_gameddz
+    Info_10:
+      Name: game2/game2_bg
+      Dependencies: {}
+    Info_11:
+      Name: game2/game2_main
+      Dependencies:
+        Dependency_0: common/uiframe
+        Dependency_1: common/common_icon
+        Dependency_2: game2/game2_bg
+    Info_12:
+      Name: gamebox/_panel
+      Dependencies:
+        Dependency_0: common/common_icon
+        Dependency_1: common/common_icon2
+        Dependency_2: gamebox/gamebox_bg
+        Dependency_3: gamebox/gamebox_icon
+    Info_13:
+      Name: gamebox/gamebox_bg
+      Dependencies: {}
+    Info_14:
+      Name: gamebox/gamebox_icon
+      Dependencies: {}
+    Info_15:
+      Name: gamebox/gamebox_main
+      Dependencies:
+        Dependency_0: common/uiframe
+    Info_16:
+      Name: jumpscene/jumpscene_main
+      Dependencies: {}
+    Info_17:
+      Name: loading/loading_bg
+      Dependencies: {}
+    Info_18:
+      Name: loading/loading_main
+      Dependencies:
+        Dependency_0: loading/loading_bg

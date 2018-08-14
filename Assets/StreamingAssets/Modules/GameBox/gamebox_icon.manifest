@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1309656725
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f6251c0f010243aa31da012aac6d4ee6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 36c33a819640bead83b84b1645a12e6d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Modules/GameBox/AB_Texture/GameBox_icon.jpg
+Dependencies: []

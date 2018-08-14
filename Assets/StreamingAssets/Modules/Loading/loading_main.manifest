@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 1483418719
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 791f277edff77ac08ed858d93fc3012b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Modules/Loading/AB_Scene/Loading_Main.unity
+Dependencies:
+- C:/Users/Administrator/Desktop/QP.Framework/Assets/StreamingAssets/Modules/loading/loading_bg
