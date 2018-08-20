@@ -37,6 +37,6 @@ Modules（Modules这个目录可以自定义）下的每个一级子目录都看
     如果你有一个目录是这样的 AB_Prefab/_package/panel/_common/panel.prefab,
     这种结构会把panel.prefab打到_common中，_common目录之外的会打包到_package中
 
-
+如果有问题欢迎一起探讨
 
 
