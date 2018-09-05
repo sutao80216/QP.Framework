@@ -1,6 +1,6 @@
 # QP.Framework
 
-一个整合了XLua的Unity5 AssetBundle 轻量级的热更新框架，实现了模块化下载的一系列流程，使用简单且灵活
+一个整合了XLua的Unity5 AssetBundle 轻量级全Lua的热更新框架，实现了资源打包、下载、资源管理、加载资源等一系列流程，使用简单且灵活
 
 启动
 ---
