@@ -4,7 +4,6 @@ using UnityEngine;
 using XLua;
 namespace QP.Framework
 {
-    [LuaCallCSharp]
     public class LuaEnvMgr : MonoBehaviour
     {
         private static LuaEnvMgr _instance;
@@ -18,7 +17,6 @@ namespace QP.Framework
         public LuaEnv LuaEnv{
             get { return luaEnv; }
         }
-        [LuaCallCSharp]
         public LuaScript Create(GameObject go, string luaPath)
         {
             foreach (var b in go.GetComponents<LuaScript>())

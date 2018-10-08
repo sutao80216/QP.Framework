@@ -11,6 +11,8 @@ namespace QP.Framework
         public string luaPath = null;
         [CSharpCallLua]
         private Action luaOnDestroy;
+        [CSharpCallLua]
+        private Action luaStart;
         private LuaTable scriptEnv;
         void Awake()
         {
@@ -28,14 +30,21 @@ namespace QP.Framework
             //如果使用 require加载的话 self为nil
             //luaEnv.DoString(@"require " + "'" + name + "'", "LuaMain", scriptEnv);
             Action luaAwake = scriptEnv.Get<Action>("Awake");
+            scriptEnv.Get("Start", out luaStart);
             scriptEnv.Get("OnDestroy", out luaOnDestroy);
             if (luaAwake != null) luaAwake();
+        }
+        void Start()
+        {
+            if (luaStart != null)
+                luaStart();
         }
         void OnDestroy()
         {
             if (luaOnDestroy != null) luaOnDestroy();
             StopAllCoroutines();
             luaOnDestroy = null;
+            luaStart = null;
             scriptEnv.Dispose();
         }
         IEnumerator UnloadUnusedAssets()

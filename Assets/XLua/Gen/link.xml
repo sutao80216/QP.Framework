@@ -3,15 +3,16 @@
 <linker>
 
 	<assembly fullname="Assembly-CSharp">
-	    <type fullname="QP.Framework.CheckForUpdateMgr" preserve="all"/>
-		<type fullname="QP.Framework.DownloadModuleMgr" preserve="all"/>
-		<type fullname="QP.Framework.LuaEnvMgr" preserve="all"/>
-		<type fullname="QP.Framework.LuaScript" preserve="all"/>
-		<type fullname="QP.Framework.JumpSceneMgr" preserve="all"/>
+	    <type fullname="QP.Framework.Module" preserve="all"/>
 		<type fullname="QP.Framework.ResMgr" preserve="all"/>
-		<type fullname="QP.Framework.ShowType" preserve="all"/>
-		<type fullname="QP.Framework.CanvasType" preserve="all"/>
+		<type fullname="QP.Framework.SceneMgr" preserve="all"/>
 		<type fullname="QP.Framework.UIManager" preserve="all"/>
+		<type fullname="QP.Framework.LuaEnvMgr" preserve="all"/>
+		<type fullname="QP.Framework.ModuleMgr" preserve="all"/>
+		<type fullname="QP.Framework.ShowType" preserve="all"/>
+		<type fullname="QP.Framework.PanelStatus" preserve="all"/>
+		<type fullname="QP.Framework.CanvasType" preserve="all"/>
+		<type fullname="QP.Framework.LuaScript" preserve="all"/>
 		<type fullname="LuaBehaviour" preserve="all"/>
 		<type fullname="XLuaTest.Pedding" preserve="all"/>
 		<type fullname="XLuaTest.MyStruct" preserve="all"/>
@@ -26,6 +27,7 @@
 		<type fullname="FooExtension" preserve="all"/>
 		<type fullname="Tutorial.BaseClass" preserve="all"/>
 		<type fullname="Tutorial.TestEnum" preserve="all"/>
+		<type fullname="Tutorial.PrivateOverrideClass" preserve="all"/>
 		<type fullname="Tutorial.DrivenClass" preserve="all"/>
 		<type fullname="Tutorial.DrivenClass+TestEnumInner" preserve="all"/>
 		<type fullname="Tutorial.ICalc" preserve="all"/>

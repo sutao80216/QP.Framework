@@ -3,19 +3,29 @@ using UnityEngine;
 using XLua;
 namespace QP.Framework
 {
-    [LuaCallCSharp]
     public enum ShowType
     {
         None,
-        CloseLastOne,//关闭上一个面板
-        CloseLastAll,//关闭上面所有面板
-        DestroyOne,
-        DestroyAll,
+        /// <summary>
+        /// 打开当前面板时关闭上一个面板
+        /// 当关闭当前面板时 会重新显示
+        /// </summary>
+        CloseLastOne,
+        /// <summary>
+        /// 打开当前面板时关闭上面所有面板
+        /// 当关闭当前面板时 会重新显示
+        /// </summary>
+        CloseLastAll,
+
+        DestroyOne, //删除上一个面板（暂未实现）
+
+        DestroyAll, //删除所有面板（暂未实现）
     }
-    [LuaCallCSharp]
     public enum CanvasType { Fixed, Normal, Top }
     public enum PanelStatus { None, Show, Close }
-    [LuaCallCSharp]
+    /// <summary>
+    /// 简单的UI框架
+    /// </summary>
     public class UIManager : MonoBehaviour
     {
         private static UIManager _instance;
@@ -32,26 +42,26 @@ namespace QP.Framework
         private Dictionary<string, Panel> _CachePanel;
         void Awake()
         {
-            this._FixedCanvas = GameObject.Find("_FixedCanvas").transform;
-            this._NormalCanvas = GameObject.Find("_NormalCanvas").transform;
-            this._TopCanvas = GameObject.Find("_TopCanvas").transform;
-            this._FixedStack = new Stack<Panel>();
-            this._NormalStack = new Stack<Panel>();
-            this._TopStack = new Stack<Panel>();
-            this._CachePanel = new Dictionary<string, Panel>();
+            _FixedCanvas = GameObject.Find("_FixedCanvas").transform;
+            _NormalCanvas = GameObject.Find("_NormalCanvas").transform;
+            _TopCanvas = GameObject.Find("_TopCanvas").transform;
+            _FixedStack = new Stack<Panel>();
+            _NormalStack = new Stack<Panel>();
+            _TopStack = new Stack<Panel>();
+            _CachePanel = new Dictionary<string, Panel>();
         }
-        public LuaTable ShowPanel(string module, string panelName) { return this.ShowPanel(module, panelName, null, CanvasType.Fixed, ShowType.None); }
-        public LuaTable ShowPanel(string module, string panelName,string bundleName) { return this.ShowPanel(module, panelName, bundleName, CanvasType.Fixed, ShowType.None); }
-        public LuaTable ShowPanel(string module, string panelName,string bundleName, CanvasType canvasType) { return this.ShowPanel(module, panelName, bundleName, canvasType, ShowType.None); }
+        public LuaTable ShowPanel(string module, string panelName) { return ShowPanel(module, panelName, null, CanvasType.Fixed, ShowType.None); }
+        public LuaTable ShowPanel(string module, string panelName,string bundleName) { return ShowPanel(module, panelName, bundleName, CanvasType.Fixed, ShowType.None); }
+        public LuaTable ShowPanel(string module, string panelName,string bundleName, CanvasType canvasType) { return ShowPanel(module, panelName, bundleName, canvasType, ShowType.None); }
         public LuaTable ShowPanel(string module,string panelName,string bundleName, CanvasType canvasType, ShowType showType)
         {
             Panel panel = null;
-            if(!this._CachePanel.TryGetValue(panelName,out panel))
+            if(!_CachePanel.TryGetValue(panelName,out panel))
             {
-                panel = this.CreatePanel(module, panelName, bundleName, canvasType);
-                this._CachePanel.Add(panelName, panel);
+                panel = CreatePanel(module, panelName, bundleName, canvasType);
+                _CachePanel.Add(panelName, panel);
             }
-            Stack<Panel> stack = this.GetStack(canvasType);
+            Stack<Panel> stack = GetStack(canvasType);
             switch (showType)
             {
                 case ShowType.CloseLastOne:
@@ -71,16 +81,22 @@ namespace QP.Framework
             stack.Push(panel);
             return panel.luaTable;
         }
+        /// <summary>
+        /// 关闭最上层面板
+        /// </summary>
         public void CloseTop(CanvasType type)
         {
-            Stack<Panel> stack = this.GetStack(type);
+            Stack<Panel> stack = GetStack(type);
             Panel panel = stack.Pop(); 
             panel.Close();
             panel.UnListen();
         }
+        /// <summary>
+        /// 关闭所有面板
+        /// </summary>
         public void CloseAll(CanvasType type)
         {
-            Stack<Panel> stack = this.GetStack(type);
+            Stack<Panel> stack = GetStack(type);
             Stack<Panel>.Enumerator e = stack.GetEnumerator();
             while (e.MoveNext())
             {
@@ -94,26 +110,26 @@ namespace QP.Framework
         {
             switch (type)
             {
-                case CanvasType.Fixed:return this._FixedCanvas;
-                case CanvasType.Normal: return this._NormalCanvas;
-                case CanvasType.Top: return this._TopCanvas;
-                default: return this._FixedCanvas;
+                case CanvasType.Fixed:return _FixedCanvas;
+                case CanvasType.Normal: return _NormalCanvas;
+                case CanvasType.Top: return _TopCanvas;
+                default: return _FixedCanvas;
             }
         }
         private Stack<Panel> GetStack(CanvasType type)
         {
             switch (type)
             {
-                case CanvasType.Fixed:return this._FixedStack;
-                case CanvasType.Normal:return this._NormalStack;
-                case CanvasType.Top:return this._TopStack;
-                default:return this._FixedStack;
+                case CanvasType.Fixed:return _FixedStack;
+                case CanvasType.Normal:return _NormalStack;
+                case CanvasType.Top:return _TopStack;
+                default:return _FixedStack;
             }
         }
         private Panel CreatePanel(string module, string panelName,string bundleName,CanvasType type)
         {
             GameObject prefab = ResMgr.Instance.GetPrefab(module, panelName, bundleName);
-            prefab = Instantiate(prefab, this.GetParent(type));
+            prefab = Instantiate(prefab, GetParent(type));
             LuaScript script = LuaEnvMgr.Instance.Create(prefab, string.Format("{0}/{1}", module, panelName));
             Panel panel = new Panel(type, PanelStatus.None, prefab, script.Table);
             return panel;

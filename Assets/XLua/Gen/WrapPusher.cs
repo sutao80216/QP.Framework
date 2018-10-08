@@ -38,6 +38,7 @@ namespace XLua
 				translator.RegisterPushAndGetAndUpdate<UnityEngine.Bounds>(translator.PushUnityEngineBounds, translator.Get, translator.UpdateUnityEngineBounds);
 				translator.RegisterPushAndGetAndUpdate<UnityEngine.Ray2D>(translator.PushUnityEngineRay2D, translator.Get, translator.UpdateUnityEngineRay2D);
 				translator.RegisterPushAndGetAndUpdate<QP.Framework.ShowType>(translator.PushQPFrameworkShowType, translator.Get, translator.UpdateQPFrameworkShowType);
+				translator.RegisterPushAndGetAndUpdate<QP.Framework.PanelStatus>(translator.PushQPFrameworkPanelStatus, translator.Get, translator.UpdateQPFrameworkPanelStatus);
 				translator.RegisterPushAndGetAndUpdate<QP.Framework.CanvasType>(translator.PushQPFrameworkCanvasType, translator.Get, translator.UpdateQPFrameworkCanvasType);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.MyEnum>(translator.PushXLuaTestMyEnum, translator.Get, translator.UpdateXLuaTestMyEnum);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.TestEnum>(translator.PushTutorialTestEnum, translator.Get, translator.UpdateTutorialTestEnum);
@@ -192,7 +193,6 @@ namespace XLua
 				
             }
 			
-			var translator = this;
 			LuaAPI.xlua_pushcstable(L, 2, PushAsTableStruct_TypeID);
 			
 			LuaAPI.xlua_pushasciistring(L, "x");
@@ -857,6 +857,90 @@ namespace XLua
             }
         }
         
+        int QPFrameworkPanelStatus_TypeID = -1;
+		int QPFrameworkPanelStatus_EnumRef = -1;
+        
+        public void PushQPFrameworkPanelStatus(RealStatePtr L, QP.Framework.PanelStatus val)
+        {
+            if (QPFrameworkPanelStatus_TypeID == -1)
+            {
+			    bool is_first;
+                QPFrameworkPanelStatus_TypeID = getTypeId(L, typeof(QP.Framework.PanelStatus), out is_first);
+				
+				if (QPFrameworkPanelStatus_EnumRef == -1)
+				{
+				    Utils.LoadCSTable(L, typeof(QP.Framework.PanelStatus));
+				    QPFrameworkPanelStatus_EnumRef = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+				}
+				
+            }
+			
+			if (LuaAPI.xlua_tryget_cachedud(L, (int)val, QPFrameworkPanelStatus_EnumRef) == 1)
+            {
+			    return;
+			}
+			
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 4, QPFrameworkPanelStatus_TypeID);
+            if (!CopyByValue.Pack(buff, 0, (int)val))
+            {
+                throw new Exception("pack fail fail for QP.Framework.PanelStatus ,value="+val);
+            }
+			
+			LuaAPI.lua_getref(L, QPFrameworkPanelStatus_EnumRef);
+			LuaAPI.lua_pushvalue(L, -2);
+			LuaAPI.xlua_rawseti(L, -2, (int)val);
+			LuaAPI.lua_pop(L, 1);
+			
+        }
+		
+        public void Get(RealStatePtr L, int index, out QP.Framework.PanelStatus val)
+        {
+		    LuaTypes type = LuaAPI.lua_type(L, index);
+            if (type == LuaTypes.LUA_TUSERDATA )
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != QPFrameworkPanelStatus_TypeID)
+				{
+				    throw new Exception("invalid userdata for QP.Framework.PanelStatus");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+				int e;
+                if (!CopyByValue.UnPack(buff, 0, out e))
+                {
+                    throw new Exception("unpack fail for QP.Framework.PanelStatus");
+                }
+				val = (QP.Framework.PanelStatus)e;
+                
+            }
+            else
+            {
+                val = (QP.Framework.PanelStatus)objectCasters.GetCaster(typeof(QP.Framework.PanelStatus))(L, index, null);
+            }
+        }
+		
+        public void UpdateQPFrameworkPanelStatus(RealStatePtr L, int index, QP.Framework.PanelStatus val)
+        {
+		    
+            if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != QPFrameworkPanelStatus_TypeID)
+				{
+				    throw new Exception("invalid userdata for QP.Framework.PanelStatus");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+                if (!CopyByValue.Pack(buff, 0,  (int)val))
+                {
+                    throw new Exception("pack fail for QP.Framework.PanelStatus ,value="+val);
+                }
+            }
+			
+            else
+            {
+                throw new Exception("try to update a data with lua type:" + LuaAPI.lua_type(L, index));
+            }
+        }
+        
         int QPFrameworkCanvasType_TypeID = -1;
 		int QPFrameworkCanvasType_EnumRef = -1;
         
@@ -1276,6 +1360,12 @@ namespace XLua
 				translator.PushQPFrameworkShowType(L, array[index]);
 				return true;
 			}
+			else if (type == typeof(QP.Framework.PanelStatus[]))
+			{
+			    QP.Framework.PanelStatus[] array = obj as QP.Framework.PanelStatus[];
+				translator.PushQPFrameworkPanelStatus(L, array[index]);
+				return true;
+			}
 			else if (type == typeof(QP.Framework.CanvasType[]))
 			{
 			    QP.Framework.CanvasType[] array = obj as QP.Framework.CanvasType[];
@@ -1375,6 +1465,12 @@ namespace XLua
 			else if (type == typeof(QP.Framework.ShowType[]))
 			{
 			    QP.Framework.ShowType[] array = obj as QP.Framework.ShowType[];
+				translator.Get(L, obj_idx, out array[array_idx]);
+				return true;
+			}
+			else if (type == typeof(QP.Framework.PanelStatus[]))
+			{
+			    QP.Framework.PanelStatus[] array = obj as QP.Framework.PanelStatus[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}

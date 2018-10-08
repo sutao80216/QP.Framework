@@ -1,64 +1,103 @@
 require ("LuaFramework/G_CS")
-local CheckForUpdateMgr=require("LuaFramework/Common/CheckForUpdateMgr")
-local DownloadModuleMgr = require("LuaFramework/Common/DownloadModuleMgr")
-local JumpSceneMgr = require("LuaFramework/Common/JumpSceneMgr")
+local Module = require("LuaFramework/Public/Module")
 
 local _transform=self.transform
 local _button
-local _slider
-local _text
+local _downloadBtn
+local _downloadText
+
 local _module
 local _count
-function Awake()
-    _button=_transform:GetComponent(typeof(UI.Button))
-    _button.onClick:AddListener(onClick)
-    _slider=_transform:Find("Slider"):GetComponent(typeof(UI.Slider))
-    _text=_transform:Find("CheckForUpdate"):GetComponent(typeof(UI.Text))
-    _count=1
-end
-function onClick()
-    if _count>0 then
-        DownloadModuleMgr.DownloadModule(_module,completeFunc,nil,totalProgressFunc,errorFunc)
-    else
-        JumpSceneMgr.Over(_module)
-    end
-end
-
-function completeFunc(module)
-    print(module," 下载完成")
-    _text.gameObject:SetActive(false)
-    _slider.gameObject:SetActive(false)
-    _count=0
-end
-
-function totalProgressFunc(module,progress)
-    _slider.value=1-progress
-    _text.text= math.floor((1-progress)*100).."%"
-end
-
-function errorFunc(module)
-    print(module," 下载失败")
-    _text.text="下载失败"..module
-end
+local _isDownloading=false
 
 function Init(str)
     _module=str
-    CheckForUpdateMgr.CheckModule(_module,CheckModuleComplete,CheckModuleError)
+    -- 检查更新
+    Module.CheckUpdate(_module,{
+        Complete=CheckUpdateComplete,
+        Error=CheckUpdateError
+    },true)
+end
+function Awake()
+    _button=_transform:GetComponent(typeof(UI.Button))
+    _button.onClick:AddListener(onClick)
+    _downloadBtn=_transform:Find("downloadBtn"):GetComponent(typeof(UI.Button))
+    _downloadText=_downloadBtn.transform:Find("downloadText"):GetComponent(typeof(UI.Text))
+    _downloadBtn.onClick:AddListener(onDownloadClick)
+    _count=1
+    _downloadBtn.image.fillAmount=0
 end
 
-function CheckModuleComplete(module,count)
+
+function onDownloadClick()
+    if _isDownloading==false then
+        -- 例1 使用lua封装的方法 全局Table监听
+        -- Module.Download(_module,{
+        --     Progress=DownloadProgress,
+        --     AllComplete=DownloadAllComplete,
+        --     OneComplete=DownloadOneComplete,
+        --     Error=DownloadError
+        -- })
+
+        -- 例2 调用C#方法 传入对应委托类型的table
+        local module =QP.ModuleMgr.Instance:GetModule(_module)
+        module:Download({
+            Progress=DownloadProgress,
+            AllComplete=DownloadAllComplete,
+            OneComplete=DownloadOneComplete,
+            Error=DownloadError
+        })
+        
+
+
+        _downloadText.text="暂停"
+        _isDownloading=true
+    else
+        Module.StopDownload(_module)
+        _downloadText.text="继续"
+        _isDownloading=false
+    end
+    
+end
+-- 检查更新完成
+function CheckUpdateComplete(module,count,size)
     _count=count
     if _count==0 then
-        _text.gameObject:SetActive(false)
-        _slider.gameObject:SetActive(false)
+        _downloadBtn.gameObject:SetActive(false)
     end
-    _text.text="需要下载：".._count.."个文件"
+    _downloadText.text=size
 end
-function CheckModuleError(module)
-    _text.text="检查更新失败"..module
+-- 检查更新失败
+function CheckUpdateError(module)
+
+end
+-- 每个文件下载的进度
+function DownloadProgress(module,result)
+    local progress=result.downloadedLength/result.contentLength
+    _downloadBtn.image.fillAmount=progress
+end
+
+-- 更新下载进度(current:当前下载完成的数量，total:需要下载总数)
+function DownloadOneComplete(module,current,total)
+    -- local progress=current/total
+    -- _downloadBtn.image.fillAmount=progress
+    -- _text.text= math.floor((1-progress)*100).."%"
+end
+-- 下载完成
+function DownloadAllComplete(module)
+    _downloadBtn.gameObject:SetActive(false)
+    _count=0
+end
+-- 下载失败
+function DownloadError(module)
+
+end
+
+function onClick()
+    if _count>0 then return end
+    Module.OverScene(_module,_module.."_Main")
 end
 
 function OnDestroy()
-    CheckForUpdateMgr.ClearEvent(_module)
-    DownloadModuleMgr.ClearEvent(_module)
+    Module.ClearEvent(_module)
 end

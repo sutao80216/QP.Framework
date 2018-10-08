@@ -5,8 +5,11 @@ using UnityEditor;
 using System.IO;
 using QP.Framework;
 public class Package  {
+    
     static string ModuleRoot = string.Format("{0}/{1}", Application.dataPath, GameConfig.module_name);
     static string TargetRoot = string.Format("{0}/{1}", Application.streamingAssetsPath, GameConfig.module_name);
+    //直接打包到你的wamp64 服务WWW目录中 方便测试
+    //static string TargetRoot = string.Format("C:/Users/steven/Desktop/Application/wamp64/www/{0}", GameConfig.module_name);
     static string AB_Lua = "AB_Lua";
     static string AB_Prefab = "AB_Prefab";
     static string AB_Scene = "AB_Scene";
@@ -23,17 +26,13 @@ public class Package  {
         List<string> Modules = GetChilds(ModuleRoot);
         foreach (var module in Modules)
         {
-            
             BuildModule(module, AB_Prefab);
             BuildModule(module, AB_Texture);
             BuildModule(module, AB_Audio);
             BuildModule(module, AB_Scene);
             BuildModule(module, AB_Material);
             BuildModule(module, AB_Lua);
-            //BuildHandler(module);
-            //CreateMd5File(module);
-            //CreateVersionFile(module);
-            //CleanAssetBundleName();
+
             Debug.Log(Path.GetFileName(module)+ "   ---------> ok!");
         }
         EditorUtility.DisplayProgressBar("Building AssetBundle", "waiting...", 0f);
@@ -73,21 +72,7 @@ public class Package  {
         AssetDatabase.Refresh();
         Close();
     }
-    //[MenuItem("构建/UnAssetBundleName", false, 2)]
-    //public static void CleanAssetBundleName()
-    //{
-    //    List<string> list = new List<string>();
-    //    Recursive(ModuleRoot, ref list);
-    //    for (int i = 0; i < list.Count; i++)
-    //    {
-    //        string file = list[i];
-    //        DirectoryInfo dirInfo = new DirectoryInfo(file);
-    //        string filePath = dirInfo.FullName.Replace('\\', '/');
-    //        filePath = filePath.Replace(Application.dataPath, "Assets");
-    //        AssetImporter ai = AssetImporter.GetAtPath(filePath);
-    //        ai.assetBundleName = null;
-    //    }
-    //}
+
     [MenuItem("构建/清理 AssetBundleName", false, 2)]
     private static void ClearAssetBundlesName()
     {
@@ -121,7 +106,7 @@ public class Package  {
             EditorUtility.DisplayProgressBar("Building AssetBundle", file, (float)i / (float)(fileList.Count - 1));
 
         }
-        //AssetDatabase.Refresh();
+
     }
     static void CreateAppVersionFile()
     {
@@ -129,8 +114,11 @@ public class Package  {
         {
             Version version = new Version();
             version.version = BuildConfig.version;
+            version.root_module = BuildConfig.root_module;
             version.app_download_url = BuildConfig.app_download_url;
             version.res_download_url = BuildConfig.res_download_url;
+            version.download_fail_retry = BuildConfig.download_fail_retry;
+            version.preTamperLua = BuildConfig.preTamperLua;
             string json = JsonUtility.ToJson(version);
             string target = string.Format("{0}/{1}", TargetRoot, "version.txt");
             if (File.Exists(target)) File.Delete(target);
@@ -147,7 +135,6 @@ public class Package  {
             Close();
         }
 
-        //AssetDatabase.Refresh();
     }
     static void CreateVersionFile(string module)
     {
@@ -221,31 +208,14 @@ public class Package  {
 
                 EditorUtility.DisplayProgressBar("Building AssetBundle", files[i].FullName, (float)i / (float)(files.Length - 1));
 
-                if (files[i].Name.EndsWith(".cs")||files[i].Name.EndsWith(".meta")||files[i].Name.EndsWith(".json")){  
+                if (files[i].Name.EndsWith(".cs")||files[i].Name.EndsWith(".meta")||files[i].Name.EndsWith(".json"))
+                {  
                     continue;
                 }
                 list.Add(files[i].FullName);
             }  
         }  
     }
-
-    //static void Recursive(string path,ref List<string> list){
-    //    if (!Directory.Exists(path)) return;
-    //    string[] res = Directory.GetFileSystemEntries(path);
-    //    for (int i = 0; i < res.Length; i++)
-    //    {
-    //        string file = res[i];
-    //        if (file.EndsWith(".meta")|| file.EndsWith(".json")) continue;
-            
-    //        if(Directory.Exists(file)){
-    //            Recursive(file, ref list);
-    //        }
-    //        if(File.Exists(file)){
-    //            list.Add(file);
-    //        }
-    //    }
-    //    AssetDatabase.Refresh();
-    //}
     static void SetAssetBundleName(List<string> list,string module, string rootPath){
         
         for (int i = 0; i < list.Count; i++)
@@ -295,6 +265,7 @@ public class Package  {
         List<string> list = new List<string>();
         foreach (FileSystemInfo file in files)
         {
+            if (Path.GetFileName(file.FullName) == ".vscode") continue;
             if (Directory.Exists(file.FullName))
             {
                 list.Add(file.FullName);
@@ -351,6 +322,11 @@ public class Package  {
     static void Close(){
         EditorUtility.ClearProgressBar();
     }
+
+
+
+
+
 }
 
 

@@ -22,31 +22,34 @@ namespace XLua.CSObjectWrap
         static void wrapInit0(LuaEnv luaenv, ObjectTranslator translator)
         {
         
-            translator.DelayWrapLoader(typeof(QP.Framework.CheckForUpdateMgr), QPFrameworkCheckForUpdateMgrWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(QP.Framework.DownloadModuleMgr), QPFrameworkDownloadModuleMgrWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(QP.Framework.LuaEnvMgr), QPFrameworkLuaEnvMgrWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(QP.Framework.LuaScript), QPFrameworkLuaScriptWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(QP.Framework.JumpSceneMgr), QPFrameworkJumpSceneMgrWrap.__Register);
+            translator.DelayWrapLoader(typeof(QP.Framework.Module), QPFrameworkModuleWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(QP.Framework.ResMgr), QPFrameworkResMgrWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(QP.Framework.SceneMgr), QPFrameworkSceneMgrWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(QP.Framework.UIManager), QPFrameworkUIManagerWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(QP.Framework.LuaEnvMgr), QPFrameworkLuaEnvMgrWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(QP.Framework.ModuleMgr), QPFrameworkModuleMgrWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(QP.Framework.ShowType), QPFrameworkShowTypeWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(QP.Framework.PanelStatus), QPFrameworkPanelStatusWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(QP.Framework.CanvasType), QPFrameworkCanvasTypeWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(QP.Framework.UIManager), QPFrameworkUIManagerWrap.__Register);
+            translator.DelayWrapLoader(typeof(QP.Framework.LuaScript), QPFrameworkLuaScriptWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(LuaBehaviour), LuaBehaviourWrap.__Register);
@@ -171,18 +174,21 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(System.Collections.Generic.List<int>), SystemCollectionsGenericList_1_SystemInt32_Wrap.__Register);
         
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.Debug), UnityEngineDebugWrap.__Register);
-        
         }
         
         static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
         {
         
+            translator.DelayWrapLoader(typeof(UnityEngine.Debug), UnityEngineDebugWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(Tutorial.BaseClass), TutorialBaseClassWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(Tutorial.TestEnum), TutorialTestEnumWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(Tutorial.PrivateOverrideClass), TutorialPrivateOverrideClassWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(Tutorial.DrivenClass), TutorialDrivenClassWrap.__Register);

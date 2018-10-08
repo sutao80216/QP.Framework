@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 namespace QP.Framework
 {
     public class Md5FileHelp
     {
-        public static Dictionary<string,string> LocalFileForDict(string module)
+
+        public static Dictionary<string, string> LocalFileForDict(string module,string fileName)
         {
-            string path = string.Format("{0}/{1}/{2}", Util.DeviceResPath, module, "md5file.txt");
+            string path = string.Format("{0}/{1}/{2}", Util.DeviceResPath, module, fileName);
             if (!File.Exists(path)) return new Dictionary<string, string>();
             try
             {
@@ -21,7 +21,7 @@ namespace QP.Framework
                 return new Dictionary<string, string>();
             }
         }
-        public static Dictionary<string,string> ForDict(string text)
+        public static Dictionary<string, string> ForDict(string text)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             if (string.IsNullOrEmpty(text)) return dict;
@@ -35,31 +35,33 @@ namespace QP.Framework
             }
             return dict;
         }
-        public static void ForFile(Dictionary<string, string>dict,string module )
+        
+        
+        public static void ForFile(Dictionary<string, string> dict, string outPath)
         {
             if (dict == null) return;
             Dictionary<string, string>.Enumerator e = dict.GetEnumerator();
-            string fullModule;
-            if (module != GameConfig.module_name)
-            {
-                fullModule = string.Format("{0}/{1}", Util.DeviceResPath, module);
-            }else
-            {
-                fullModule = Util.DeviceResPath;
-            }
-            string outPath = string.Format("{0}/{1}", fullModule, "md5file.txt");
             if (File.Exists(outPath)) File.Delete(outPath);
-
-            FileStream fs = new FileStream(outPath, FileMode.CreateNew);
-            StreamWriter sw = new StreamWriter(fs);
-            while (e.MoveNext())
+            try
             {
-                sw.WriteLine(string.Format("{0}|{1}", e.Current.Key, e.Current.Value));
+                FileStream fs = new FileStream(outPath, FileMode.CreateNew);
+                StreamWriter sw = new StreamWriter(fs);
+                while (e.MoveNext())
+                {
+                    sw.WriteLine(string.Format("{0}|{1}", e.Current.Key, e.Current.Value));
+                }
+                e.Dispose();
+                fs.Flush();
+                sw.Close();
+                sw.Dispose();
+                fs.Close();
+                fs.Dispose();
             }
-            e.Dispose();
-            fs.Flush();
-            sw.Close();
-            fs.Close();
+            catch (System.Exception ex)
+            {
+                Debug.LogError(ex.Message);
+            }
+            
         }
 
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using XLua;
 
@@ -17,39 +15,39 @@ namespace QP.Framework
         private Panel _panel;
         public Panel(CanvasType type, PanelStatus status, GameObject obj, LuaTable table)
         {
-            this.panelType = type;
-            this.panelStatus = status;
-            this.panelObject = obj;
-            this.luaTable = table;
+            panelType = type;
+            panelStatus = status;
+            panelObject = obj;
+            luaTable = table;
         }
         public void Show()
         {
-            this.panelStatus = PanelStatus.Show;
-            if (!this.panelObject.activeSelf) this.panelObject.SetActive(true);
-            if (this._panel != null) this._panel.CloseEvent -= this.Show;
-            if (this.ShowEvent != null) this.ShowEvent();
-            this.panelObject.transform.SetAsLastSibling();
+            panelStatus = PanelStatus.Show;
+            if (!panelObject.activeSelf) panelObject.SetActive(true);
+            if (_panel != null) _panel.CloseEvent -= Show;
+            if (ShowEvent != null) ShowEvent();
+            panelObject.transform.SetAsLastSibling();
         }
         public void Close()
         {
-            this.panelStatus = PanelStatus.Close;
-            if (this.panelObject.activeSelf) this.panelObject.SetActive(false);
-            if (this._panel != null) this._panel.ShowEvent -= this.Close;
-            if (this.CloseEvent != null) this.CloseEvent();
+            panelStatus = PanelStatus.Close;
+            if (panelObject.activeSelf) panelObject.SetActive(false);
+            if (_panel != null) _panel.ShowEvent -= Close;
+            if (CloseEvent != null) CloseEvent();
         }
         public void Listen(Panel panel)
         {
-            this.UnListen();
-            this._panel = panel;
-            this._panel.ShowEvent += this.Close;
-            this._panel.CloseEvent += this.Show;
+            UnListen();
+            _panel = panel;
+            _panel.ShowEvent += Close;
+            _panel.CloseEvent += Show;
         }
         public void UnListen()
         {
-            if (this._panel != null)
+            if (_panel != null)
             {
-                this._panel.CloseEvent -= this.Show;
-                this._panel.ShowEvent -= this.Close;
+                _panel.CloseEvent -= Show;
+                _panel.ShowEvent -= Close;
             }
         }
     }
