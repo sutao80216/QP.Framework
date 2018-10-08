@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 2489678243
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 038c4c39216fcc7b08e298a5e2c5ae42
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c1642440719609290a7e09a50a7286f4
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Modules/Loading/AB_Texture/Loading_bg.jpg
+Dependencies: []

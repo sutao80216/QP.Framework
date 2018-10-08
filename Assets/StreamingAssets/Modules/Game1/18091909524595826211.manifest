@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1414188021
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7e78b7ab3ca820ed9a1b1bbdb0e5f45c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f11dae1f0660b609e306899f37ef0a74
+HashAppended: 0
+ClassTypes:
+- Class: 329
+  Script: {instanceID: 0}
+Assets:
+- Assets/Modules/Game1/AB_Prefab/18091909524595826211.mp4
+Dependencies: []

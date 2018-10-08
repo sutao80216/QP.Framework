@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 1454368464
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e3af156de53b84d9e1da1791e06d00dc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7a9f72b79bb790ad2ab5268169c5d340
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Modules/Game1/AB_Prefab/DoudizhuPanel.prefab
+Dependencies: []

@@ -1,0 +1,49 @@
+fileFormatVersion: 2
+guid: d14e094efd68c2e4a896d2da691a603e
+timeCreated: 1538987290
+licenseType: Pro
+VideoClipImporter:
+  serializedVersion: 2
+  useLegacyImporter: 0
+  quality: 0.5
+  isColorLinear: 0
+  originalWidth: 1000
+  originalHeight: 560
+  frameRange: 0
+  startFrame: -1
+  endFrame: -1
+  frameCount: 3720
+  frameRate: 24
+  colorSpace: 0
+  deinterlace: 0
+  sourceFileSize: 20810813
+  encodeAlpha: 0
+  sourceHasAlpha: 0
+  flipVertical: 0
+  flipHorizontal: 0
+  importAudio: 1
+  sourceAudioChannelCount: 0200
+  sourceAudioSampleRate: 44ac0000
+  targetSettings: {}
+  output:
+    format: 1
+    settings:
+      enableTranscoding: 0
+      codec: 0
+      resizeFormat: 0
+      aspectRatio: 0
+      customWidth: 1000
+      customHeight: 560
+      bitrateMode: 2
+      spatialQuality: 2
+    encodedWidth: 1000
+    encodedHeight: 560
+    encodedStartFrame: 0
+    encodedEndFrame: 3720
+    streamedResource:
+      source: 
+      offset: 0
+      size: 20810813
+  userData: 
+  assetBundleName: game1/18091909524595826211
+  assetBundleVariant: 
