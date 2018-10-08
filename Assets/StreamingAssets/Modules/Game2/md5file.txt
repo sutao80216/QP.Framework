@@ -1,3 +1,0 @@
-Game2/game2_bg|f21dadaa579719e974257cee7a49ecc8
-Game2/game2_main|0cb54c79dfae41f4049cad5be2d90bd1
-Game2/AB_Lua/Main.txt|e690a63ec48514191d60e35698d11b86
