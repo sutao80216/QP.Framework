@@ -15,20 +15,13 @@ function Main()
     end)
 end
 function StartUp(moduleName,complete)
-    -- 例1 使用lua封装的方法 全局Table监听
-    -- Module.CheckAndDownload(moduleName,{
-    --     AllComplete=function(moduleName)
-    --         complete(moduleName)
-    --     end
-    -- })
-
-    -- 例2 调用C#方法 传入对应委托类型的table 
-    local module =QP.ModuleMgr.Instance:GetModule(moduleName)
-    module:CheckAndDownload({
+    Module.CheckAndDownload(moduleName,{
         AllComplete=function(moduleName)
             complete(moduleName)
         end
     })
+
+    
 end
 
 

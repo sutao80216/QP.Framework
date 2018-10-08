@@ -31,25 +31,12 @@ end
 
 function onDownloadClick()
     if _isDownloading==false then
-        -- 例1 使用lua封装的方法 全局Table监听
-        -- Module.Download(_module,{
-        --     Progress=DownloadProgress,
-        --     AllComplete=DownloadAllComplete,
-        --     OneComplete=DownloadOneComplete,
-        --     Error=DownloadError
-        -- })
-
-        -- 例2 调用C#方法 传入对应委托类型的table
-        local module =QP.ModuleMgr.Instance:GetModule(_module)
-        module:Download({
+        Module.Download(_module,{
             Progress=DownloadProgress,
             AllComplete=DownloadAllComplete,
             OneComplete=DownloadOneComplete,
             Error=DownloadError
         })
-        
-
-
         _downloadText.text="暂停"
         _isDownloading=true
     else

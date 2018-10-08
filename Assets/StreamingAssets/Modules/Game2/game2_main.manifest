@@ -12,6 +12,6 @@ ClassTypes: []
 Assets:
 - Assets/Modules/Game2/AB_Scene/Game2_Main.unity
 Dependencies:
-- C:/Users/steven/Desktop/myGit/QP.Framework/Assets/StreamingAssets/Modules/common/uiframe
-- C:/Users/steven/Desktop/myGit/QP.Framework/Assets/StreamingAssets/Modules/common/common_icon
-- C:/Users/steven/Desktop/myGit/QP.Framework/Assets/StreamingAssets/Modules/game2/game2_bg
+- C:/Users/steven/Desktop/Application/wamp64/www/Modules/common/uiframe
+- C:/Users/steven/Desktop/Application/wamp64/www/Modules/common/common_icon
+- C:/Users/steven/Desktop/Application/wamp64/www/Modules/game2/game2_bg
