@@ -105,7 +105,8 @@ namespace QP.Framework
                 }
                 Debug.Log(Name + " 需要下载 " + _sizeStr);
                 if (table.Complete != null) table.Complete(Name, _downloadQueue.Count, _sizeStr);
-                Destroy(cub);
+                Destroy(cub.gameObject);
+                cub = null;
             });
         }
         #endregion
