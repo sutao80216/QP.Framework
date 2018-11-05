@@ -1,6 +1,6 @@
 -- [[禁止require]]
 require ("LuaFramework/G_CS")
-require("LuaFramework/G_Log")
+
 _SceneTable={}
 local this=_SceneTable
 

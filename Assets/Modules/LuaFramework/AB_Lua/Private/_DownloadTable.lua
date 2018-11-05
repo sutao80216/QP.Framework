@@ -1,6 +1,5 @@
 -- [[禁止require]]
 require ("LuaFramework/G_CS")
-require("LuaFramework/G_Log")
 _DownloadTable={}
 local this=_DownloadTable
 
