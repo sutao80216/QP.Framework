@@ -153,18 +153,18 @@ namespace QP.Framework
             }
             e.Dispose();
 
-            Debug.Log("---------------------当前模块：" + module + "的资源--------------------------");
-            foreach (var item in ModuleAssetBundles)
-            {
-                if (item.Value.bundles != null)
-                {
-                    Debug.Log(item.Key);
-                    foreach (var item2 in item.Value.bundles)
-                    {
-                        Debug.Log("\t->> " + item2.Key);
-                    }
-                }
-            }
+            //Debug.Log("---------------------当前模块：" + module + "的资源--------------------------"+ ModuleAssetBundles.Count);
+            //foreach (var item in ModuleAssetBundles)
+            //{
+            //    if (item.Value.bundles != null)
+            //    {
+            //        Debug.Log(item.Key);
+            //        foreach (var item2 in item.Value.bundles)
+            //        {
+            //            Debug.Log("\t->> " + item2.Key);
+            //        }
+            //    }
+            //}
 
         }
         public GameObject GetPrefab(string module, string prefabName, string bundleName = null) 

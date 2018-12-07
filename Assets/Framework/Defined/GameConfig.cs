@@ -15,11 +15,11 @@
         /// <summary>
         /// 安装包下载地址
         /// </summary>
-        public const string app_download_url = "http://192.168.0.125";
+        public const string app_download_url = "http://192.168.0.143";
         /// <summary>
         /// 资源下载地址
         /// </summary>
-        public const string res_download_url = "http://192.168.0.125";
+        public const string res_download_url = "http://192.168.0.143";
         /// <summary>
         /// 下载失败重试次数
         /// </summary>
@@ -54,7 +54,7 @@
         /// <summary>
         /// 版本配置文件下载地址
         /// </summary>
-        public const string version_download_url = "http://192.168.0.125";
+        public const string version_download_url = "http://192.168.0.143";
         /// <summary>
         /// 版本配置文件名
         /// </summary>

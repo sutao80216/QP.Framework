@@ -55,7 +55,7 @@ namespace QP.Framework
             }
             else
             {
-                Debug.LogError(sceneName+"跳转场景失败");
+                Debug.LogError("场景："+sceneName+ " 跳转场景失败, 检查是否已经把Modules下面所有场景添加到File->Build Settings中");
                 if (_sceneTable != null&& _sceneTable.Error!=null) _sceneTable.Error(moduleName);
                 Clear();
             }
