@@ -1,5 +1,5 @@
 
-require ("LuaFramework/G_CS")
+require ("LuaFramework/Global")
 
 local _transform=self.transform
 local _gameObject=self.gameObject

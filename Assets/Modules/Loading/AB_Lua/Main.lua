@@ -1,16 +1,8 @@
-require ("LuaFramework/G_CS")
+require ("LuaFramework/Global")
 
 function Awake()
 	local go=CS.UnityEngine.GameObject.Find("LoadingPanel")
-	local script = QP.LuaEnvMgr.Instance:Create(go,"Loading/LoadingPanel")
+	local script=GameMgr.AddScript(go,"Loading/LoadingPanel")
 end
-
-
 function OnDestroy()
 end
-
-
-
-
-
-

@@ -1,28 +1,19 @@
-require ("LuaFramework/G_CS")
-require ("LuaFramework/G_Global")
-local Module = require("LuaFramework/Public/Module")
-
+require ("LuaFramework/Global")
 local _slider
 local _text
 function Awake()
-    _slider = UNITY.GameObject.Find("Slider"):GetComponent(typeof(UI.Slider))
-    _text=UNITY.GameObject.Find("Text"):GetComponent(typeof(UI.Text))
+    _slider = UE.GameObject.Find("Slider"):GetComponent(typeof(UI.Slider))
+    _text=UE.GameObject.Find("Text"):GetComponent(typeof(UI.Text))
+    GameMgr.GetSingle("Event").AddEvent(SceneCmd,SceneCmd.Progress,Progress)
 end
 function Start()
-    print("目标模块->",__TARGET_MODULE__," 目标场景->",__TARGET_SCENE__)
-    Module.JumpScene(__TARGET_MODULE__,__TARGET_SCENE__,true,true,{
-        Progress=OnProgress,
-        Complete=OnComplete,
-        Error=OnError
-    })
+    -- print("目标模块->",__TARGET_MODULE__," 目标场景->",__TARGET_SCENE__)
+    GameMgr.GetSingle("Module").JumpScene(__TARGET_MODULE__,__TARGET_SCENE__,true,true)
 end
-function OnProgress(module,progress)
-    _slider.value=progress
-    _text.text=math.floor(progress*100).."%"
+function Progress(data)
+    _slider.value=data.progress
+    _text.text=math.floor(data.progress*100).."%"
 end
-function OnComplete(module)
-    -- print(module,"过度场景完成！")
-end
-function OnError(module)
-    -- print(module,"过度场景失败！！")
+function OnDestroy()
+    GameMgr.GetSingle("Event").RemoveEvent(SceneCmd,SceneCmd.Progress,Progress)
 end

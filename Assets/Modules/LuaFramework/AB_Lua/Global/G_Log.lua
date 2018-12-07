@@ -1,6 +1,6 @@
 local Debug = CS.UnityEngine.Debug
 
-local Log = {}
+Log = {}
 local this = Log
 function this.Info(...)
     local msg = this.GetMessage(...)
@@ -47,5 +47,3 @@ function this.GetTableMsg(tab, space)
     msg = msg .. "\n" .. space1 .. "}"
     return msg
 end
-
-return this
