@@ -21,15 +21,18 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(QP.Framework.LuaScript);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 2, 1);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 3, 2);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Init", _m_Init);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Awake", _m_Awake);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Table", _g_get_Table);
-            Utils.RegisterFunc(L, Utils.GETTER_IDX, "luaPath", _g_get_luaPath);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "root", _g_get_root);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "LuaPath", _g_get_LuaPath);
             
-			Utils.RegisterFunc(L, Utils.SETTER_IDX, "luaPath", _s_set_luaPath);
+			Utils.RegisterFunc(L, Utils.SETTER_IDX, "root", _s_set_root);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "LuaPath", _s_set_LuaPath);
             
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
@@ -76,6 +79,33 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Init(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                QP.Framework.LuaScript gen_to_be_invoked = (QP.Framework.LuaScript)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.Init(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Awake(RealStatePtr L)
         {
 		    try {
@@ -120,13 +150,27 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _g_get_luaPath(RealStatePtr L)
+        static int _g_get_root(RealStatePtr L)
         {
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 QP.Framework.LuaScript gen_to_be_invoked = (QP.Framework.LuaScript)translator.FastGetCSObj(L, 1);
-                LuaAPI.lua_pushstring(L, gen_to_be_invoked.luaPath);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.root);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_LuaPath(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                QP.Framework.LuaScript gen_to_be_invoked = (QP.Framework.LuaScript)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushstring(L, gen_to_be_invoked.LuaPath);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -136,13 +180,28 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _s_set_luaPath(RealStatePtr L)
+        static int _s_set_root(RealStatePtr L)
         {
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 QP.Framework.LuaScript gen_to_be_invoked = (QP.Framework.LuaScript)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.luaPath = LuaAPI.lua_tostring(L, 2);
+                gen_to_be_invoked.root = LuaAPI.lua_toboolean(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_LuaPath(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                QP.Framework.LuaScript gen_to_be_invoked = (QP.Framework.LuaScript)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.LuaPath = LuaAPI.lua_tostring(L, 2);
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
