@@ -1,18 +1,19 @@
-require ("LuaFramework/G_CS")
-require ("LuaFramework/G_Global")
-local JumpSceneMgr = require("LuaFramework/Common/JumpSceneMgr")
-
+require ("LuaFramework/Global")
 local _slider
 local _text
 function Awake()
-    _slider = UNITY.GameObject.Find("Slider"):GetComponent(typeof(UI.Slider))
-    _text=UNITY.GameObject.Find("Text"):GetComponent(typeof(UI.Text))
-    print("Target Module->",__TARGET_MODULE__,"Target Scene->",__TARGET_SCENE__)
-    JumpSceneMgr.Jump(__TARGET_MODULE__,__TARGET_SCENE__,OnProgress)
+    _slider = UE.GameObject.Find("Slider"):GetComponent(typeof(UI.Slider))
+    _text=UE.GameObject.Find("Text"):GetComponent(typeof(UI.Text))
+    GameMgr.GetSingle("Event").AddEvent(SceneCmd,SceneCmd.Progress,Progress)
 end
-
-function OnProgress(module,progress)
-    _slider.value=progress
-    _text.text=math.floor(progress*100).."%"
-
+function Start()
+    -- print("目标模块->",__TARGET_MODULE__," 目标场景->",__TARGET_SCENE__)
+    GameMgr.GetSingle("Module").JumpScene(__TARGET_MODULE__,__TARGET_SCENE__,true,true)
+end
+function Progress(data)
+    _slider.value=data.progress
+    _text.text=math.floor(data.progress*100).."%"
+end
+function OnDestroy()
+    GameMgr.GetSingle("Event").RemoveEvent(SceneCmd,SceneCmd.Progress,Progress)
 end

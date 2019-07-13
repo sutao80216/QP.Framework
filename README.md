@@ -1,6 +1,12 @@
 # QP.Framework
 
-一个整合了XLua的Unity5 AssetBundle 轻量级的热更新框架，实现了模块化下载的一系列流程，使用简单且灵活
+一个整合了XLua的Unity5 AssetBundle 轻量级全Lua的热更新框架，实现了资源打包、下载、资源管理、加载资源等一系列流程，使用简单且灵活
+
+版本更新 2.0.0
+---
+* 增加Module类来管理一个模块的更新/下载/初始化资源/跳转场景
+* 重构下载相关的功能代码，C#对lua公开的方法都由Module类来提供
+* 封装了HttpWebRequest 和 UnityWebRequest 两个类来支持断点续传，暂停和恢复下载
 
 启动
 ---
@@ -37,6 +43,6 @@ Modules（Modules这个目录可以自定义）下的每个一级子目录都看
     如果你有一个目录是这样的 AB_Prefab/_package/panel/_common/panel.prefab,
     这种结构会把panel.prefab打到_common中，_common目录之外的会打包到_package中
 
-如果有问题欢迎一起探讨
+如果有问题欢迎一起探讨 也欢迎有兴趣的朋友贡献代码 一起学习交流
 
 

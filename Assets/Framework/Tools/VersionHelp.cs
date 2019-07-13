@@ -5,12 +5,6 @@ using System.Text;
 using UnityEngine;
 namespace QP.Framework
 {
-    public class Version
-    {
-        public string version;
-        public string app_download_url;
-        public string res_download_url;
-    }
     public class VersionHelp
     {
         private static Version _version;
@@ -72,11 +66,16 @@ namespace QP.Framework
         public static void WriteLocalVersionFile(Version version)
         {
             string version_path = string.Format("{0}/{1}", Util.DeviceResPath, "version.txt");
+            //创建根目录
             if (!Directory.Exists(Path.GetDirectoryName(version_path)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(version_path));
             }
-            if (File.Exists(version_path)) File.Delete(version_path);
+            //删除旧文件
+            if (File.Exists(version_path))
+            {
+                File.Delete(version_path);
+            }
             string json = JsonUtility.ToJson(version);
             try
             {

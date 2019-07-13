@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5fa7b16a177cac940aad2527307ea8bd
-timeCreated: 1532748227
+timeCreated: 1538987287
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -64,5 +64,5 @@ TextureImporter:
     outline: []
   spritePackingTag: 
   userData: 
-  assetBundleName: 
+  assetBundleName: gamebox/gamebox_bg
   assetBundleVariant: 

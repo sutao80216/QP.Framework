@@ -11,7 +11,9 @@ namespace QP.Framework
     {
         public Dictionary<string, AssetBundle> bundles;
     }
-    [LuaCallCSharp]
+    /// <summary>
+    /// 资源管理类
+    /// </summary>
     public class ResMgr : MonoBehaviour
     {
         private Dictionary<string, ModuleAssetBundle> ModuleAssetBundles;
@@ -37,6 +39,11 @@ namespace QP.Framework
         public void InitAssetBundle(string module,Action<float>progress, Action complete)
         {
             if (complete == null) complete = () => { };
+            if (GameConfig.gameModel== GameModel.Editor)
+            {
+                complete();
+                return;
+            }
             ModuleAssetBundle moduleAssetBundle = null;
             if (ModuleAssetBundles.TryGetValue(module,out moduleAssetBundle))
             {
@@ -80,7 +87,14 @@ namespace QP.Framework
                 yield return StartCoroutine(FindDependencies(manifest, bundleName,
                     (string key) => moduleAssetBundle.bundles.ContainsKey(key),
                     (string key, AssetBundle value) => moduleAssetBundle.bundles.Add(key, value)));
-                moduleAssetBundle.bundles.Add(Path.GetFileName(bundleName), bw.assetBundle);
+                if (bw.error != null)
+                {
+                    Debug.LogError("请检查  "+ module+"  是否已经下载成功？"+ bw.error);
+                }
+                else
+                {
+                    moduleAssetBundle.bundles.Add(Path.GetFileName(bundleName), bw.assetBundle);
+                }
             }
 
             if (ModuleAssetBundles.ContainsKey(module)){
@@ -88,7 +102,6 @@ namespace QP.Framework
             }else{
                 ModuleAssetBundles.Add(module, moduleAssetBundle);
             }
-            
             complete();
         }
 
@@ -105,15 +118,17 @@ namespace QP.Framework
                     if (IsContains(Path.GetFileName(dep))) continue;
                     //if (Dependencies.ContainsKey(Path.GetFileName(dep))) continue;
                     string url = string.Format("{0}/{1}", Util.WWWDeviceResPath, dep);
+                    //Debug.Log("添加依赖资源：" + url);
+
                     WWW www = new WWW(url);
                     yield return www;
-                    //Debug.Log("添加外部依赖" + Path.GetFileName(dep));
                     Add(Path.GetFileName(dep), www.assetBundle);
                     //Dependencies.Add(Path.GetFileName(dep), www.assetBundle);
                 }
             }
             yield return new WaitForEndOfFrame();
         }
+
         public void ClearOtherModule(string module)
         {
             Dictionary<string, ModuleAssetBundle>.Enumerator e = ModuleAssetBundles.GetEnumerator();
@@ -122,7 +137,6 @@ namespace QP.Framework
                 if (e.Current.Key == module) continue;
                 if (e.Current.Value.bundles == null) continue;
                 //如果内存允许的话可以打开这个 可以让过度场景无延迟跳转
-                //if (e.Current.Key == "JumpScene") continue;
                 if (e.Current.Key != module)
                 {
                     //Debug.Log(e.Current.Key + " 资源被释放！！！"+ module);
@@ -139,18 +153,19 @@ namespace QP.Framework
             }
             e.Dispose();
 
-
+            //Debug.Log("---------------------当前模块：" + module + "的资源--------------------------"+ ModuleAssetBundles.Count);
             //foreach (var item in ModuleAssetBundles)
             //{
-            //    Debug.Log("当前模块存货：" + item.Key);
-            //    if (item.Value.bundles!=null)
+            //    if (item.Value.bundles != null)
             //    {
+            //        Debug.Log(item.Key);
             //        foreach (var item2 in item.Value.bundles)
             //        {
-            //            Debug.Log("--------------：" + item2.Key);
+            //            Debug.Log("\t->> " + item2.Key);
             //        }
             //    }
             //}
+
         }
         public GameObject GetPrefab(string module, string prefabName, string bundleName = null) 
         {
@@ -197,29 +212,7 @@ namespace QP.Framework
 #endif
             return null;
         }
-        //private string Recursive(string path,string name)
-        //{
-        //    if (!Directory.Exists(path)) return null;
-        //    string[] res = Directory.GetFileSystemEntries(path);
-        //    for (int i = 0; i < res.Length; i++)
-        //    {
-        //        string file = res[i];
-
-        //        if (file.EndsWith(".meta") || file.EndsWith(".json")) continue;
-        //        if (Directory.Exists(file))
-        //        {
-        //            return Recursive(file, name);
-        //        }
-        //        if (File.Exists(file))
-        //        {
-        //            if (Path.GetFileNameWithoutExtension(file) == name)
-        //            {
-        //                return file;
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
+       
         private string Recursive(string path,string name ){
             if (!Directory.Exists(path)) return null;
             DirectoryInfo direction = new DirectoryInfo(path);  
@@ -234,9 +227,6 @@ namespace QP.Framework
                 {
                     return file.FullName;
                 }
-                //Debug.Log( "Name:" + files[i].Name );  
-                //Debug.Log( "FullName:" + files[i].FullName );  
-                //Debug.Log( "DirectoryName:" + files[i].DirectoryName );  
             }
             return null;
         }

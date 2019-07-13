@@ -1,9 +1,8 @@
-require ("LuaFramework/G_CS")
-local JumpSceneMgr = require("LuaFramework/Common/JumpSceneMgr")
+require ("LuaFramework/Global")
 function Awake()
-    _button=UNITY.GameObject.Find("Button"):GetComponent(typeof(UI.Button))
+    _button=UE.GameObject.Find("Button"):GetComponent(typeof(UI.Button))
 
     _button.onClick:AddListener(function()
-        JumpSceneMgr.Over("GameBox")
+        GameMgr.GetSingle("Module").OverScene("GameBox","GameBox_Main")
     end)
 end

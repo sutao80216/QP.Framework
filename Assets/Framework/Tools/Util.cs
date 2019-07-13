@@ -43,6 +43,11 @@ namespace QP.Framework
         public static T GetInstance<T>(ref T instance,string name, bool isDontDestroy=true) where T : UnityEngine.Object
         {
             if (instance != null) return instance;
+            if (GameObject.FindObjectOfType<T>() != null)
+            {
+                instance = GameObject.FindObjectOfType<T>();
+                return instance;
+            }
             GameObject go = new GameObject(name, typeof(T));
             if (isDontDestroy) UnityEngine.Object.DontDestroyOnLoad(go);
             instance= go.GetComponent(typeof(T)) as T;
@@ -137,6 +142,23 @@ namespace QP.Framework
             {
                 throw new Exception("md5file() fail, error:" + ex.Message);
             }
+        }
+        /// <summary>
+        /// 转换方法
+        /// </summary>
+        /// <param name="size">字节值</param>
+        /// <returns></returns>
+        public static string HumanReadableFilesize(double size)
+        {
+            String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            double mod = 1024.0;
+            int i = 0;
+            while (size >= mod)
+            {
+                size /= mod;
+                i++;
+            }
+            return Math.Round(size) + units[i];
         }
     }
 }

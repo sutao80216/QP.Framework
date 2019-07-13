@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1b0dd93086c84d14e8bb551ad82f33c8
-timeCreated: 1534215143
+timeCreated: 1538987286
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -88,5 +88,5 @@ TextureImporter:
     outline: []
   spritePackingTag: 
   userData: 
-  assetBundleName: 
+  assetBundleName: gamebox/gamebox_icon
   assetBundleVariant: 

@@ -1,119 +1,105 @@
-﻿using System.Collections.Generic;
+﻿using QP.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
-namespace QP.Framework
-{
-    public class AppStart : MonoBehaviour
+public class AppStart : MonoBehaviour {
+    public VideoPlayer player;
+    public Image _image;
+    public Text _text;
+    private bool isDownloaded;
+    private bool isPlayend;
+    private string moduleName;
+    void Awake()
     {
-        private Version version;
-        private bool isWriteMd5File;
-        private ThreadDownload thread;
-        private DownloadMd5File md5File;
-        private int downloadCount;
-        private int completeCount;
-        private bool canStartUp;
-        private bool playinged;
-        public VideoPlayer player;
-        void Awake()
+        _image.gameObject.SetActive(false);
+        DownloadVersion();
+        PlayVideo();
+    }
+    private void PlayVideo()
+    {
+        if (GameConfig.gameModel == GameModel.Editor)
         {
-            canStartUp = false;
-            playinged = false;
+            isPlayend = true;
+            StartUpModule();
         }
-        private void Start()
+        else
         {
-            if (GameConfig.gameModel == GameModel.Editor)
-            {
-                playinged = true;
-                canStartUp = true;
-                Ready();
-                return;
-            }
-            player.loopPointReached += new VideoPlayer.EventHandler(playerStop);
             player.Play();
-            downloadCount = 0;
-            completeCount = 0;
-            isWriteMd5File = false;
-            new DownloadVersion((Version v) => {
-                version = v;
-                md5File = new DownloadMd5File(version, GameConfig.default_module, onMd5File);
-            });
-        }
-        void playerStop(VideoPlayer p)
-        {
-            playinged = true;
-            StartUp();
-        }
-        void onMd5File(Queue<DownloadConfig> DownloadList)
-        {
-            if (DownloadList.Count > 0)
+            player.loopPointReached += delegate (VideoPlayer source)
             {
-                downloadCount = DownloadList.Count;
-                isWriteMd5File = true;
-                thread = new ThreadDownload(DownloadList);
-                thread.Start();
-            }
-            else
-            {
-                Ready();
-            }
-        }
-        /// <summary>
-        /// 启动游戏
-        /// </summary>
-        void StartUp()
-        {
-            if (playinged && canStartUp)
-            {
-                Debug.Log("启动游戏");
-                LuaEnvMgr.Instance.CallLua("LuaFramework/Main");
-            }
-        }
-
-
-        void Ready()
-        {
-            canStartUp = true;
-            StartUp();
-        }
-        private void Update()
-        {
-            if (thread != null)
-            {
-                if (thread.Events.Count > 0)
-                {
-                    DownloadEvent e = thread.Events.Dequeue();
-                    switch (e.eventType)
-                    {
-                        case DownloadEventType.Progress:
-                            break;
-                        case DownloadEventType.Completed:
-                            md5File.UpdateLoaclMd5File(e.config.key);
-                            completeCount++;
-                            if (completeCount == downloadCount)
-                            {
-                                md5File.WriteToLocalFile(GameConfig.default_module);
-                                isWriteMd5File = false;
-                                Ready();
-                            }
-                            break;
-                        case DownloadEventType.Error:
-                            Debug.Log("下载失败了");
-                            break;
-                    }
-                }
-            }
-        }
-
-        void OnDestroy()
-        {
-            if (isWriteMd5File)
-            {
-                md5File.WriteToLocalFile(GameConfig.default_module);
-            }
-            if (thread != null)
-                thread.Stop();
+                isPlayend = true;
+                StartUpModule();
+            };
         }
     }
-}
+    private void DownloadVersion()
+    {
+        string version_url = string.Format("{0}/{1}/{2}",
+            GameConfig.version_download_url, GameConfig.module_name, GameConfig.version_name);
+        new DownloadVersionFile(version_url, GameConfig.download_Fail_Count, GameConfig.download_Fail_Retry_Delay, DownloadVersionCompleted);
+    }
+    private void DownloadVersionCompleted(VersionResType type, Version version)
+    {
+        switch (type)
+        {
+            case VersionResType.DownloadFail:
+                Debug.Log("Version 下载失败");
+                break;
+            case VersionResType.DownloadSuccess:
+                moduleName = version.root_module;
+                DownloadRootModule();
+                break;
+            case VersionResType.Different:
+                Debug.Log("Version 版本不同");
+                break;
+            case VersionResType.Unusual:
+                Debug.Log("Version 解析异常");
+                break;
+        }
+    }
+    private void DownloadRootModule()
+    {
+        Module module = ModuleMgr.Instance.GetModule(moduleName);
+        DownloadTable table = new DownloadTable()
+        {
+            Befor = DownloadBefor,
+            Progress = DownloadProgress,
+            OneComplete = DownloadOneComplete,
+            AllComplete = DownloadAllComplete,
+            Error = DownloadError
+        };
+        module.CheckAndDownload(table);
+    }
+    private void StartUpModule()
+    {
+        if (!isDownloaded || !isPlayend) return;
+        if (string.IsNullOrEmpty(moduleName)) return;
+        LuaEnvMgr.Instance.CallLua(string.Format("{0}/Main", moduleName));
+    }
+    private void DownloadBefor(string moduleName,int count)
+    {
 
+    }
+    private void DownloadProgress(string moduleName, SDownloadFileResult result)
+    {
+
+    }
+    private void DownloadOneComplete(string moduleName, int downloadedCount, int downloadTotal)
+    {
+        float progress = (float)downloadedCount / (float)downloadTotal;
+        _image.fillAmount = progress;
+        _text.text = Mathf.FloorToInt(progress*100) + "%";
+        _image.gameObject.SetActive(true);
+    }
+    private void DownloadAllComplete(string moduleName)
+    {
+        _text.text ="OK";
+        isDownloaded = true;
+        StartUpModule();
+    }
+    private void DownloadError(string moduleName)
+    {
+        Debug.LogError(moduleName + " 下载失败 ");
+    }
+}

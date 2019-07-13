@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-namespace WYY.NA.GameFramework
+namespace QP.Framework
 {
 
     public struct sLogData

@@ -10,6 +10,14 @@ xLua目前以zip包形式发布，在工程目录下解压即可。
 
 更改目录要注意的是：生成代码和xLua核心代码必须在同一程序集。如果你要用热补丁特性，xLua核心代码必须在Assembly-CSharp程序集。
 
+## xLua的配置
+
+如果你用的是lua编程，你可能需要把一些频繁访问的类配置到LuaCallCSharp，这些类的成员如果有条件编译（大多数情况下是UNITY_EDITOR）的话，你需要通过BlackList配置排除；如果你需要通过delegate回调到lua的地方，得把这些delegate配置到CSharpCallLua。
+
+如果你用的是热补丁，你需要把要注入的代码加到Hotfix列表；如果你需要通过delegate回调到lua的地方，也得把这些delegate配置到CSharpCallLua。
+
+xLua提供了强大的动态配置，让你可以结合反射实现任意的自动化配置，动态配置介绍看[这里](configure.md)。xLua希望你能根据自身项目的需求自行配置，同时为了方便部分对反射api了解不够的童鞋，xLua也针对上面两者方式分别写了参考配置：[ExampleConfig.cs](../Editor/ExampleConfig.cs)，直接打开相应部分的注释即可使用。
+
 ## lua源码只能以txt后缀？
 
 什么后缀都可以。
@@ -288,6 +296,20 @@ print(dic:TryGetValue('a'))
 
 要注意以上操作在Dispose之前完成。
 
+xlua提供了一个工具函数来帮助你找到被C#引用着的lua函数，util.print_func_ref_by_csharp，使用很简单，执行如下lua代码：
+
+~~~lua
+local util = require 'xlua.util'
+util.print_func_ref_by_csharp()
+~~~
+
+可以看到控制台有类似这样的输出，下面第一行表示有一个在main.lua的第2行定义的函数被C#引用着
+
+~~~bash
+LUA: main.lua:2
+LUA: main.lua:13
+~~~
+
 ## 调用LuaEnv.Dispose崩溃
 
 很可能是这个Dispose操作是由lua那驱动执行，相当于在lua执行的过程中把lua虚拟机给释放了，改为只由C#执行即可。
@@ -415,3 +437,36 @@ f2(obj, 1, 2) --调用int版本
 ## 如何把xLua的Wrap生成操作集成到我项目的自动打包流程中？
 
 可以参考[例子13](../Examples/13_BuildFromCLI/)，通过命令行调用Unity自定义类方法出包。
+
+## 使用热补丁特性，打手机版本时报DelegatesGensBridge.cs引用了不存在的类（比如仅编辑器使用的类型），应该如何处理？
+
+这是因为Hotfix列表里头配置的类型（假设是类型A），对这些不存在的类型（假设是类型B）引用。找到这种类型，从Hotfix配置列表中排除（注意，排除的类型A，而不是类型B）。
+
+如何找？VS中选中报不存在的类型，然后“Find All References”找到引用了这个类型的所有方法、属性。。这些方法、属性等等所在的类型就是你要排除的类型。
+
+## 如何加载字节码
+
+用luac编译后直接加载即可。
+
+要注意默认lua字节码是区分32位和64位的，32位luac生成的字节码只能在32位虚拟机里头跑，可以按《[通用字节码](compatible_bytecode.md)》一文处理下。
+
+## lua持有的c#对象怎么释放
+
+达成下面两点即可释放：
+
+* 1、lua所有对该C#对象释放
+* 2、lua完成一次gc周期
+
+貌似所有gc都是上述条件，但对于lua要特别说明下第二点，lua不像C#那样会后台启动一个gc线程在做垃圾回收，而是把gc拆分成小步骤插入到有内存分配。
+
+所以注意一点：你没在运行lua代码，或者lua代码运行并未分配内存，你怎么等也不会有内存回收。
+
+默认gc配置，lua要到达上次内存回收完成时内存占用的两倍才开启一轮新的gc周期，举例上次回收完毕20M内存，那么下次要等到40M才开始一轮gc周期。
+
+按xLua的设计，一个C#对象引用传递到lua，仅让lua增加4字节内存（然而这可能是在C#侧内存占用很大的对象，比如贴图），可以看到通过持有C#引用要达成默认配置开启gc周期条件是比较困难的。
+
+这时可以这么干：
+
+* 1、设置GcPause，让gc更快开启，默认200表示2倍上次回收内存时开启，coco2dx设置为100，表示完成一趟gc后马上开启下一趟，另外也可以设置GcStepmul来加快gc回收速度，默认是200表示回收比内存分配快两倍，GcStepmul在coco2dx设置为5000
+* 2、可以在场景切换之类对于性能要求不高的地方加入全量gc调用（通过LuaEnv.FullGc或者在lua里头调用collectgarbage('collect')都可以）。
+
